@@ -551,23 +551,23 @@ const SkillsManager: React.FC = () => {
             activeTab === 'marketplace' ? 'bg-claude-accent' : 'bg-transparent'
           }`} />
         </button>
+        {updatableSkills.length > 0 && (
+          <div className="ml-auto pr-1 pb-1">
+            <button
+              type="button"
+              onClick={handleUpgradeAll}
+              disabled={upgradeState?.isActive === true}
+              className="inline-flex items-center gap-1 px-2 py-1 text-[11px] font-medium rounded-md border border-emerald-500/30 bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/20 dark:text-emerald-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <ArrowPathIcon className="h-3 w-3" />
+              {i18nService.t('skillUpgradeAll').replace('{count}', String(updatableSkills.length))}
+            </button>
+          </div>
+        )}
       </div>
 
       {activeTab === 'installed' && (
       <>
-      {updatableSkills.length > 0 && (
-        <div className="flex justify-end mb-2">
-          <button
-            type="button"
-            onClick={handleUpgradeAll}
-            disabled={upgradeState?.isActive === true}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-amber-500 text-white hover:bg-amber-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            <ArrowPathIcon className="h-3.5 w-3.5" />
-            {i18nService.t('skillUpgradeAll').replace('{count}', String(updatableSkills.length))}
-          </button>
-        </div>
-      )}
       <div className="grid grid-cols-2 gap-3">
         {filteredSkills.length === 0 ? (
           <div className="col-span-2 text-center py-8 text-sm dark:text-claude-darkTextSecondary text-claude-textSecondary">
@@ -647,7 +647,7 @@ const SkillsManager: React.FC = () => {
                         type="button"
                         onClick={(e) => { e.stopPropagation(); handleUpgradeSkill(mp); }}
                         disabled={upgradeState?.isActive === true}
-                        className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-lg bg-amber-500 text-white hover:bg-amber-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="inline-flex items-center gap-1 px-2 py-1 text-[10px] font-medium rounded-lg border border-emerald-500/30 bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/20 dark:text-emerald-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         <ArrowPathIcon className="h-3.5 w-3.5" />
                         {i18nService.t('skillUpgrade')}
@@ -730,7 +730,7 @@ const SkillsManager: React.FC = () => {
                             type="button"
                             onClick={(e) => { e.stopPropagation(); handleUpgradeSkill(skill); }}
                             disabled={upgradeState?.isActive === true}
-                            className="inline-flex items-center gap-1 px-2 py-1 text-[10px] font-medium rounded-lg bg-amber-500 text-white hover:bg-amber-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="inline-flex items-center gap-1 px-2 py-1 text-[10px] font-medium rounded-lg border border-emerald-500/30 bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/20 dark:text-emerald-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                           >
                             <ArrowPathIcon className="h-3.5 w-3.5" />
                             {i18nService.t('skillUpgrade')}
