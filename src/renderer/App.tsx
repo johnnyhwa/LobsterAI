@@ -23,6 +23,7 @@ import { checkForAppUpdate, type AppUpdateInfo, type AppUpdateDownloadProgress, 
 import { defaultConfig } from './config';
 import { setAvailableModels, setSelectedModel } from './store/slices/modelSlice';
 import { clearSelection } from './store/slices/quickActionSlice';
+import { setActiveSkillIds } from './store/slices/skillSlice';
 import type { ApiConfig } from './services/api';
 import type { CoworkPermissionResult } from './types/cowork';
 import { ChatBubbleLeftRightIcon } from '@heroicons/react/24/outline';
@@ -49,6 +50,7 @@ const App: React.FC = () => {
   const [privacyAgreed, setPrivacyAgreed] = useState<boolean | null>(null);
   const toastTimerRef = useRef<number | null>(null);
   const hasInitialized = useRef(false);
+  const pendingCoworkTextRef = useRef<string | null>(null);
   const dispatch = useDispatch();
   const selectedModel = useSelector((state: RootState) => state.model.selectedModel);
   const currentSessionId = useSelector((state: RootState) => state.cowork.currentSessionId);
@@ -265,6 +267,14 @@ const App: React.FC = () => {
       }));
     }, 0);
   }, [dispatch, mainView, currentSessionId]);
+
+  const handleCreateSkill = useCallback(() => {
+    coworkService.clearSession();
+    dispatch(clearSelection());
+    dispatch(setActiveSkillIds(['skill-creator']));
+    pendingCoworkTextRef.current = i18nService.t('createSkillDefaultPrompt');
+    setMainView('cowork');
+  }, [dispatch]);
 
   const showToast = useCallback((message: string) => {
     setToastMessage(message);
@@ -656,6 +666,7 @@ const App: React.FC = () => {
                 isSidebarCollapsed={isSidebarCollapsed}
                 onToggleSidebar={handleToggleSidebar}
                 onNewChat={handleNewChat}
+                onCreateSkill={handleCreateSkill}
                 updateBadge={isSidebarCollapsed ? updateBadge : null}
               />
             ) : mainView === 'scheduledTasks' ? (
@@ -688,6 +699,7 @@ const App: React.FC = () => {
                 onToggleSidebar={handleToggleSidebar}
                 onNewChat={handleNewChat}
                 updateBadge={isSidebarCollapsed ? updateBadge : null}
+                initialText={pendingCoworkTextRef}
               />
             )}
           </div>

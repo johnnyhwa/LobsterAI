@@ -14,6 +14,7 @@ import FolderOpenIcon from '../icons/FolderOpenIcon';
 import LinkIcon from '../icons/LinkIcon';
 import PuzzleIcon from '../icons/PuzzleIcon';
 import TrashIcon from '../icons/TrashIcon';
+import PencilIcon from '../icons/PencilIcon';
 import { i18nService } from '../../services/i18n';
 import { skillService, resolveLocalizedText, compareVersions } from '../../services/skill';
 import { setSkills } from '../../store/slices/skillSlice';
@@ -24,7 +25,11 @@ import SkillSecurityReport from './SkillSecurityReport';
 
 type SkillTab = 'installed' | 'marketplace';
 
-const SkillsManager: React.FC = () => {
+interface SkillsManagerProps {
+  onCreateSkill?: () => void;
+}
+
+const SkillsManager: React.FC<SkillsManagerProps> = ({ onCreateSkill }) => {
   const dispatch = useDispatch();
   const skills = useSelector((state: RootState) => state.skill.skills);
 
@@ -284,6 +289,11 @@ const SkillsManager: React.FC = () => {
     setIsGithubImportOpen(true);
   };
 
+  const handleCreateSkill = () => {
+    setIsAddSkillMenuOpen(false);
+    onCreateSkill?.();
+  };
+
   const handleImportFromGithub = async () => {
     if (isDownloadingSkill) return;
     await handleAddSkillFromSource(skillDownloadSource);
@@ -511,6 +521,14 @@ const SkillsManager: React.FC = () => {
               >
                 <LinkIcon className="h-4 w-4 dark:text-claude-darkTextSecondary text-claude-textSecondary" />
                 <span>{i18nService.t('importFromGithub')}</span>
+              </button>
+              <button
+                type="button"
+                onClick={handleCreateSkill}
+                className="w-full flex items-center gap-3 px-3 py-2.5 text-sm dark:text-claude-darkText text-claude-text dark:hover:bg-claude-darkSurfaceHover hover:bg-claude-surfaceHover transition-colors"
+              >
+                <PencilIcon className="h-4 w-4 dark:text-claude-darkTextSecondary text-claude-textSecondary" />
+                <span>{i18nService.t('createSkill')}</span>
               </button>
             </div>
           )}
